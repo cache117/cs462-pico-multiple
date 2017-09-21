@@ -1,4 +1,4 @@
-# cs462-pico-single
+# cs462-pico-multiple
 
 For verification that a ruleset works, use the following code:
 
