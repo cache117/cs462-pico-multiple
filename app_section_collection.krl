@@ -6,7 +6,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 >>
 		author "Cache Staheli"
 		logging on
-		shares __testing, showChildren
+		shares __testing
 		use module io.picolabs.pico alias wrangler
 	}
 	global {
@@ -14,6 +14,11 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			"Section " + section_id + " Pico"
 		}
 		__testing = {
+			"queries": [
+				{
+					"name": "showChildren"
+				}
+			],
 			"events" : [
 				{
 					"domain": "section",
@@ -21,6 +26,10 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 					"attrs": [
 						"section_id"
 					]
+				},
+				{
+					"domain": "collection",
+					"type": "empty"
 				}
 			]
 		}
@@ -43,5 +52,11 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
     			raise pico event "new_child_request"
       			attributes { "dname": nameFromID(section_id), "color": "#FF69B4" }
   		}
+	}
+	rule collection_empty {
+		select when collection empty
+		always {
+			ent:sections := {}
+		}
 	}
 }
