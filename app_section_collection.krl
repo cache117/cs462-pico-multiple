@@ -7,6 +7,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		author "Cache Staheli"
 		logging on
 		shares __testing
+		provides showChildren
 		use module io.picolabs.pico alias wrangler
 	}
 	global {
