@@ -17,6 +17,9 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			"queries": [
 				{
 					"name": "showChildren"
+				},
+				{
+					"name": "__testing"
 				}
 			],
 			"events" : [
@@ -35,6 +38,10 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 		showChildren = function() {
 			wrangler:children()
+		}
+
+		sections = function() {
+			ent:sections
 		}
 	}
 	rule section_needed {
@@ -71,7 +78,19 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			section_id = event:attr("rs_attrs") {"section"}
 		}
 		if section_id.klog("found section_id") then
-			noop()
+			event:send (
+				{ 
+					"eci": the_section.eci,
+					"eid": "install-ruleset",
+					"domain": "pico",
+					"type": "new_ruleset",
+					"attrs": {
+						"base": meta:rulesetURI,
+						"url": "app_section.krl",
+						"section_id": section_id
+					}
+				}
+			)
 		fired {
 			ent:sections := ent:sections.defaultsTo({});
 			ent:sections{[section_id]} := the_section
