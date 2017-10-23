@@ -22,7 +22,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				{
 					"domain": "car",
 					"type": "new_vehicle",
-					"attrs:" [
+					"attrs": [
 						"car_id"
 					]
 				},
