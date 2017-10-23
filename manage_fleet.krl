@@ -16,6 +16,9 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				},
 				{
 					"name": "vehicles"
+				},
+				{
+					"name": "show_children"
 				} 
 			],
                   	"events": [
@@ -37,15 +40,22 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 
 		nameFromId = function(vehicle_id) {
-			"Vehicle " + vehicle_id + " Pico"
+			"Vehicle - " + vehicle_id + " - Pico"
+		}
+
+		childFromId = function(vehicle_id) {
+			{
+				"id": <child's id>,
+				"eci": <child's eci>
+			}
 		}
 		
 		vehicles = function() {
-		
+			ent:vehicles		
 		}
 
 		vehicles_trips = function() {
-
+			"Not Implemented"
 		}
 
 		show_children = function() {
@@ -68,7 +78,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				attributes {
 					"dname": nameFromId(vehicle_id),
 					"color": "#FF69B4",
-					"vehicle": vehicle
+					"vehicle": vehicle_id
 				}
 		}	
 	}
@@ -119,11 +129,17 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		pre {
 			vehicle_id = event:attr("vehicle_id")
 			exists = ent:vehicles >< vehicle_id
+			eci = meta:eci
+			child_to_delete = childFromId(vehicle_id)
 		}
 		if exists then
-			noop()
+			send_directive("vehicle_deleted", {
+				"vehicle_id": vehicle_id
+			})
 		fired {
-			ent:vehicles.delete([vehicle_id])
+			raise pico event "delete_child_request"
+				attribute child_to_delete;
+			ent:vehicles{[vehicle_id]} := null
 		}
 	}
 
