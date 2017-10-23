@@ -5,7 +5,7 @@ ruleset manage_fleet {
 Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 >>
 		logging on
-    		shares __testing, vehicles
+    		shares __testing, vehicles, vehicles_trips, show_children
 		use module io.picolabs.pico alias wrangler
   	}
   	global {
@@ -48,7 +48,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 
 		}
 
-		showChildren = function() {
+		show_children = function() {
 			wrangler:children()
 		}
   	}
