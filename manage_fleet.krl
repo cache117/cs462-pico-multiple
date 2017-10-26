@@ -110,7 +110,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				{ 
 					"eci": the_vehicle_eci,
 					"eid": "install-ruleset",
-					"domain": "wrangler",
+					"domain": "pico",
 					"type": "new_ruleset",
 					"attrs": {
 						"rids": "track_trips;io.picolabs.subscription",
