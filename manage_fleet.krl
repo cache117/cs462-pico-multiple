@@ -44,11 +44,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 
 		childFromId = function(vehicle_id) {
-			child = end:vehicles[vehicle_id]
-			{
-				"id": child.id,
-				"eci": child.eci
-			}
+			end:vehicles[vehicle_id]
 		}
 		
 		vehicles = function() {
@@ -144,7 +140,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			})
 		fired {
 			raise pico event "delete_child_request"
-				attribute child_to_delete;
+				attributes child_to_delete;
 			ent:vehicles{[vehicle_id]} := null
 		}
 	}
