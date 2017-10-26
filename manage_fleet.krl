@@ -43,12 +43,13 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			"Vehicle - " + vehicle_id + " - Pico"
 		}
 
-		//childFromId = function(vehicle_id) {
-		//	{
-		//		"id": <child's id>,
-		//		"eci": <child's eci>
-		//	}
-		//}
+		childFromId = function(vehicle_id) {
+			child = end:vehicles[vehicle_id]
+			{
+				"id": child.id,
+				"eci": child.eci
+			}
+		}
 		
 		vehicles = function() {
 			ent:vehicles		
@@ -129,24 +130,24 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 	}
 
-	//rule delete_vehicle {
-//		select when car unneeded_vehicle
-//		pre {
-//			vehicle_id = event:attr("vehicle_id")
-//			exists = ent:vehicles >< vehicle_id
-//			eci = meta:eci
-//			child_to_delete = childFromId(vehicle_id)
-//		}
-//		if exists then
-//			send_directive("vehicle_deleted", {
-//				"vehicle_id": vehicle_id
-//			})
-//		fired {
-//			raise pico event "delete_child_request"
-//				attribute child_to_delete;
-//			ent:vehicles{[vehicle_id]} := null
-//		}
-//	}
+	rule delete_vehicle {
+		select when car unneeded_vehicle
+		pre {
+			vehicle_id = event:attr("vehicle_id")
+			exists = ent:vehicles >< vehicle_id
+			eci = meta:eci
+			child_to_delete = childFromId(vehicle_id)
+		}
+		if exists then
+			send_directive("vehicle_deleted", {
+				"vehicle_id": vehicle_id
+			})
+		fired {
+			raise pico event "delete_child_request"
+				attribute child_to_delete;
+			ent:vehicles{[vehicle_id]} := null
+		}
+	}
 
 
 	rule collection_empty {
