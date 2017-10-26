@@ -53,4 +53,14 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 			} if (mileage > long_trip);
 		}
 	}
+
+	rule pico_ruleset_added {
+		select when wrangler ruleset_added where rid == meta:rid
+		pre {
+			vehicle_id = event:attr("vehicle_id")
+		}
+		always {
+			ent:vehicle_id := vehicle_id
+		}
+	}
 }
