@@ -78,7 +78,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				attributes {
 					"dname": nameFromId(vehicle_id),
 					"color": "#FF69B4",
-					"vehicle": vehicle_id
+					"vehicle_id": vehicle_id
 				}
 		}	
 	}
@@ -87,7 +87,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		select when car new_vehicle
                 pre {
                         vehicle_id = event:attr("vehicle_id")
-                        exists = ent:cars >< car_id
+                        exists = ent:vehicles >< vehicle_id
                 }
 
                 if exists then
