@@ -5,8 +5,9 @@ ruleset manage_fleet {
 Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 >>
 		logging on
-    		shares __testing, vehicles, vehicles_trips, show_children
+    		shares __testing, fleet, vehicles, vehicles_trips, show_children
 		use module io.picolabs.pico alias wrangler
+		use module io.picolabs.subscription alias Subscription
   	}
   	global {
  		__testing = { 
@@ -15,7 +16,13 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 					"name": "__testing" 
 				},
 				{
+					"name": "fleet"
+				},
+				{
 					"name": "vehicles"
+				},
+				{
+					"name": "vehicles_trips"
 				},
 				{
 					"name": "show_children"
@@ -46,9 +53,13 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		childFromId = function(vehicle_id) {
 			ent:vehicles[vehicle_id]
 		}
+
+		fleet = function() {
+			ent:vehicles
+		}
 		
 		vehicles = function() {
-			ent:vehicles		
+			Subscriptions:getSubscriptions()
 		}
 
 		vehicles_trips = function() {
