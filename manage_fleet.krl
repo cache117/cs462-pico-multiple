@@ -99,7 +99,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 	}
 
 	rule pico_child_initialized {
-		select when pico child_initialized
+		select when wrangler child_initialized
 		pre {
 			the_vehicle = event:attr("new_child")
 			vehicle_id = event:attr("rs_attrs") {"vehicle_id"}
@@ -112,7 +112,6 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 					"domain": "pico",
 					"type": "new_ruleset",
 					"attrs": {
-						"base": meta:rulesetURI,
 						"url": "https://raw.githubusercontent.com/cache117/cs462-pico-multiple/master/track_trips.krl",
 						"vehicle_id": vehicle_id
 					}
