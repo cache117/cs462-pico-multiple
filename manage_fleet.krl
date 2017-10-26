@@ -110,9 +110,11 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				{ 
 					"eci": the_vehicle_eci,
 					"eid": "install-ruleset",
-					"domain": "pico",
+					"domain": "wrangler",
 					"type": "new_ruleset",
 					"attrs": {
+						"rid": "track_trips",
+						// Leaving the URL here because installing from URL is not working properly
 						"url": "https://raw.githubusercontent.com/cache117/cs462-pico-multiple/master/track_trips.krl",
 						"vehicle_id": vehicle_id
 					}
