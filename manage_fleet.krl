@@ -101,13 +101,14 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 	rule pico_child_initialized {
 		select when wrangler child_initialized
 		pre {
-			the_vehicle = event:attr("new_child")
+			the_vehicle_eci = event:attr("eci")
+			the_vehicle_id = event:attr("id")
 			vehicle_id = event:attr("rs_attrs") {"vehicle_id"}
 		}
 		if vehicle_id.klog("found vehicle_id") then
 			event:send (
 				{ 
-					"eci": the_vehicle.eci,
+					"eci": the_vehicle_eci,
 					"eid": "install-ruleset",
 					"domain": "pico",
 					"type": "new_ruleset",
@@ -119,7 +120,10 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			)
 		fired {
 			ent:vehicles := ent:vehicles.defaultsTo({});
-			ent:vehicles{[vehicle_id]} := the_vehicle
+			ent:vehicles{[vehicle_id]} := {
+				"eci":the_vehicle_eci, 
+				"id": the_vehicle_id
+			}
 		}
 	}
 
