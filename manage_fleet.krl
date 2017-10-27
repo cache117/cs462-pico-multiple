@@ -59,7 +59,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 		
 		vehicles = function() {
-			Subscriptions:getSubscriptions()
+			Subscription:getSubscriptions()
 		}
 
 		vehicles_trips = function() {
