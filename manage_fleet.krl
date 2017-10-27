@@ -114,20 +114,32 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			vehicle_id = event:attr("rs_attrs") {"vehicle_id"}
 		}
 		if vehicle_id.klog("found vehicle_id") then
-			event:send (
-				{ 
-					"eci": the_vehicle_eci,
-					"eid": "install-ruleset",
-					"domain": "pico",
-					"type": "new_ruleset",
-					"attrs": {
-						"rids": "track_trips;io.picolabs.subscription",
-						// Leaving the URL here because installing from URL is not working properly
-						"url": "https://raw.githubusercontent.com/cache117/cs462-pico-multiple/master/track_trips.krl",
-						"vehicle_id": vehicle_id
-					}
+			event:send({ 
+				"eci": the_vehicle_eci,
+				"eid": "install-ruleset",
+				"domain": "pico",
+				"type": "new_ruleset",
+				"attrs": {
+					"rids": "track_trips;io.picolabs.subscription",
+					// Leaving the URL here because installing from URL is not working properly
+					"url": "https://raw.githubusercontent.com/cache117/cs462-pico-multiple/master/track_trips.krl",
+					"vehicle_id": vehicle_id
 				}
-			)
+			})
+			event:send({
+				"eci": ent:eci,
+				"eid": "subscription",
+				"domain": "wrangler",
+				"type": "subscription",
+				"attrs": {
+					"name": "Vehicle - " + vehicle_id + " - Subscription",
+					"name_space": "vehicle",
+					"my_role": "controller",
+					"subscriber_role": "vehicle",
+					"channel_type": "subscription",
+					"subscriber_eci": the_vehicle_eci
+				}
+			})
 		fired {
 			ent:vehicles := ent:vehicles.defaultsTo({});
 			ent:vehicles{[vehicle_id]} := {
