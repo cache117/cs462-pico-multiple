@@ -63,4 +63,15 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 			ent:vehicle_id := vehicle_id
 		}
 	}
+
+	rule auto_accept {
+		select when wrangler inbound_pending_subscription_added
+		pre {
+			attributes = event:attrs().klog("subscription:")
+		}
+		always {
+			raise wrangler event "pending_subscription_approval"
+			attributes attributes
+		}
+	}
 }
