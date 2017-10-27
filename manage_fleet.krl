@@ -113,7 +113,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			the_vehicle_id = event:attr("id")
 			vehicle_id = event:attr("rs_attrs") {"vehicle_id"}
 		}
-		if vehicle_id.klog("found vehicle_id") then
+		if vehicle_id.klog("found vehicle_id") then every {
 			event:send({ 
 				"eci": the_vehicle_eci,
 				"eid": "install-ruleset",
@@ -140,6 +140,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 					"subscriber_eci": the_vehicle_eci
 				}
 			})
+		}
 		fired {
 			ent:vehicles := ent:vehicles.defaultsTo({});
 			ent:vehicles{[vehicle_id]} := {
