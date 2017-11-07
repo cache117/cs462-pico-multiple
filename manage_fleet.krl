@@ -109,11 +109,11 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 	rule pico_child_initialized {
 		select when wrangler child_initialized
 		pre {
-			the_vehicle_eci = event:attr("eci")
-			the_vehicle_id = event:attr("id")
-			vehicle_id = event:attr("rs_attrs") {"vehicle_id"}
+			the_vehicle_eci = event:attr("eci");
+			the_vehicle_id = event:attr("id");
+			vehicle_id = event:attr("rs_attrs") {"vehicle_id"};
 		}
-		if vehicle_id.klog("found vehicle_id") then every {
+		if vehicle_id.klog("found vehicle_id: ") then every {
 			event:send({ 
 				"eci": the_vehicle_eci,
 				"eid": "install-ruleset",
@@ -125,38 +125,33 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 					"url": "https://raw.githubusercontent.com/cache117/cs462-pico-multiple/master/track_trips.krl",
 					"vehicle_id": vehicle_id
 				}
-			})
-			event:send({
-				"eci": ent:eci,
-				"eid": "subscription",
-				"domain": "wrangler",
-				"type": "subscription",
-				"attrs": {
-					"name": "Vehicle - " + vehicle_id + " - Subscription",
-					"name_space": "vehicle",
-					"my_role": "controller",
-					"subscriber_role": "vehicle",
-					"channel_type": "subscription",
-					"subscriber_eci": the_vehicle_eci
-				}
-			})
+			});
 		}
 		fired {
 			ent:vehicles := ent:vehicles.defaultsTo({});
 			ent:vehicles{[vehicle_id]} := {
 				"eci":the_vehicle_eci, 
 				"id": the_vehicle_id
-			}
+			};
+			raise wrangler event "subscription" 
+				attributes {
+                                        "name": "Vehicle - " + vehicle_id + " - Subscription",
+                                        "name_space": "vehicle",
+                                        "my_role": "controller",
+                                        "subscriber_role": "vehicle",
+                                        "channel_type": "subscription",
+                                        "subscriber_eci": the_vehicle_eci
+                                }; 
 		}
 	}
 
 	rule delete_vehicle {
 		select when car unneeded_vehicle
 		pre {
-			vehicle_id = event:attr("vehicle_id")
-			exists = ent:vehicles >< vehicle_id
-			eci = meta:eci
-			child_to_delete = childFromId(vehicle_id)
+			vehicle_id = event:attr("vehicle_id").klog("Vehicle Id: ")
+			exists = ent:vehicles >< vehicle_id.klog("Exists: ")
+			eci = meta:eci.klog("Eci: ")
+			child_to_delete = childFromId(vehicle_id).klog("Vehicle to Delete: ")
 		}
 		if exists then
 			send_directive("vehicle_deleted", {
@@ -168,7 +163,6 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			ent:vehicles{[vehicle_id]} := null
 		}
 	}
-
 
 	rule collection_empty {
 		select when collection empty
