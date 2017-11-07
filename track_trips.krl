@@ -54,7 +54,7 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 	rule process_trip {
 		select when car new_trip 
 		pre {
-			mileage = event:attr("mileage").klog("our passed in mileage ");
+			mileage = event:attr("mileage").klog("mileage for trip processing");
 		}
 		send_directive("trip", {"length": mileage})
 		always {
@@ -66,7 +66,7 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 	rule find_long_trips {
 		select when explicit trip_processed
 		pre {		
-			mileage = event:attr("mileage").klog("our passed in mileage ");
+			mileage = event:attr("mileage").klog("mileage for finding long trips ");
 		}
 		always {
 			ent:found := "true" if (mileage > long_trip);
@@ -79,7 +79,7 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 	rule collect_trips {
 		select when explicit trip_processed
 		pre {
-			mileage = event:attr("mileage").klog("our passed in mileage ");
+			mileage = event:attr("mileage").klog("our passed in mileage for colleting trips ");
 			trip_id = random:uuid();
 			timestamp = time:now();
 		}
@@ -91,7 +91,6 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 		always {
 			ent:trips := ent:trips.defaultsTo({});
 			ent:trips{[trip_id]} := {
-				"trip_id": trip_id,
                         	"mileage": mileage,
                         	"timestamp": timestamp
 			}
@@ -101,7 +100,7 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 	rule collect_long_trips {
 		select when explicit found_long_trip
                 pre {
-                        mileage = event:attr("mileage").klog("our passed in mileage ");
+                        mileage = event:attr("mileage").klog("our passed in mileage for collecting long trips ");
                         trip_id = random:uuid();
                         timestamp = time:now();
                 }
@@ -113,7 +112,6 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
                 always {
                         ent:long_trips := ent:long_trips.defaultsTo({});
                         ent:long_trips{[trip_id]} := {
-                                "trip_id": trip_id,
                                 "mileage": mileage,
                                 "timestamp": timestamp
                         }
