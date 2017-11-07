@@ -135,7 +135,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			};
 			raise wrangler event "subscription" 
 				attributes {
-                                        "name": "Vehicle-" + vehicle_id + "-Subscription",
+                                        "name": vehicle_id,
                                         "name_space": "vehicle",
                                         "my_role": "controller",
                                         "subscriber_role": "vehicle",
@@ -152,7 +152,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			exists = ent:vehicles >< vehicle_id.klog("Exists: ");
 			eci = meta:eci.klog("Eci: ");
 			child_to_delete = childFromId(vehicle_id).klog("Vehicle to Delete: ");
-			subscription_name = "vehicle:Vehicle-" + vehicle_id + "-Subscription";
+			subscription_name = "vehicle:" + vehicle_id;
 		}
 		if exists then
 			send_directive("vehicle_deleted", {
