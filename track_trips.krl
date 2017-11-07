@@ -6,18 +6,28 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 >>
 		author "Cache Staheli"
 		logging on
-		shares __testing
+		shares __testing, trips, long_trips, short_trips
+		provides trips, long_trips, short_trips 
 	}
   
 	global {
 		
-		long_trip = "500"
+		long_trip = 500;
 		
 		__testing = {
 			"queries": [
 				{
 					"name": "__testing"
-				}
+				},
+                                {
+                                        "name": "trips"
+                                },
+                                {
+                                        "name": "long_trips"
+                                },
+                                {
+                                        "name": "short_trips"
+                                }	
 			],
 			"events": [
 				{
@@ -27,12 +37,24 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 				}
 			]
 		}
+
+		trips = function() {
+			ent:trips
+		}
+
+		long_trips = function() {
+			ent:long_trips
+		}
+
+		short_trips = function() {
+			ent:trips - ent:long_trips
+		}
 	}
 
 	rule process_trip {
 		select when car new_trip 
 		pre {
-			mileage = event:attr("mileage").klog("our passed in mileage ")
+			mileage = event:attr("mileage").klog("our passed in mileage ");
 		}
 		send_directive("trip", {"length": mileage})
 		always {
@@ -44,7 +66,7 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 	rule find_long_trips {
 		select when explicit trip_processed
 		pre {		
-			mileage = event:attr("mileage").klog("our passed in mileage ")
+			mileage = event:attr("mileage").klog("our passed in mileage ");
 		}
 		always {
 			ent:found := "true" if (mileage > long_trip);
@@ -54,10 +76,55 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 		}
 	}
 
+	rule collect_trips {
+		select when explicit trip_processed
+		pre {
+			mileage = event:attr("mileage").klog("our passed in mileage ");
+			trip_id = random:uuid();
+			timestamp = time:now();
+		}
+		send_directive("store_trips", {
+			"trip_id": trip_id,
+			"mileage": mileage,
+			"timestamp": timestamp
+		});
+		always {
+			ent:trips := ent:trips.defaultsTo({});
+			ent:trips{[trip_id]} := {
+				"trip_id": trip_id,
+                        	"mileage": mileage,
+                        	"timestamp": timestamp
+			}
+		}
+	}
+
+	rule collect_long_trips {
+		select when explicit found_long_trip
+                pre {
+                        mileage = event:attr("mileage").klog("our passed in mileage ");
+                        trip_id = random:uuid();
+                        timestamp = time:now();
+                }
+                send_directive("store_trips", {
+                        "trip_id": trip_id,
+                        "mileage": mileage,
+                        "timestamp": timestamp
+                });
+                always {
+                        ent:long_trips := ent:long_trips.defaultsTo({});
+                        ent:long_trips{[trip_id]} := {
+                                "trip_id": trip_id,
+                                "mileage": mileage,
+                                "timestamp": timestamp
+                        }
+                }
+
+	}
+
 	rule pico_ruleset_added {
 		select when wrangler ruleset_added where rid == meta:rid
 		pre {
-			vehicle_id = event:attr("vehicle_id")
+			vehicle_id = event:attr("vehicle_id").klog("Vehicle Id ")
 		}
 		always {
 			ent:vehicle_id := vehicle_id
