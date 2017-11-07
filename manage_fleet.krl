@@ -159,12 +159,12 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				"vehicle_id": vehicle_id
 			});
 		fired {
+			raise wrangler event "subscription_cancelation"
+                                attributes {
+                                        "subscription_name": subscription_name
+                                };
 			raise pico event "delete_child_request"
 				attributes child_to_delete;
-			raise wrangler event "subscription_removal"
-				attributes {
-					"subscription_name": subscription_name
-				};
 			ent:vehicles{[vehicle_id]} := null
 		}
 	}
