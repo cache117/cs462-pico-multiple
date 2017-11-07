@@ -47,7 +47,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 
 		nameFromId = function(vehicle_id) {
-			"Vehicle - " + vehicle_id + " - Pico"
+			"Vehicle-" + vehicle_id + "-Pico"
 		}
 
 		childFromId = function(vehicle_id) {
@@ -135,7 +135,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			};
 			raise wrangler event "subscription" 
 				attributes {
-                                        "name": "Vehicle - " + vehicle_id + " - Subscription",
+                                        "name": "Vehicle-" + vehicle_id + "-Subscription",
                                         "name_space": "vehicle",
                                         "my_role": "controller",
                                         "subscriber_role": "vehicle",
