@@ -159,7 +159,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				"vehicle_id": vehicle_id
 			});
 		fired {
-			raise wrangler event "subscription_cancelation"
+			raise wrangler event "subscription_cancellation"
                                 attributes {
                                         "subscription_name": subscription_name
                                 };
