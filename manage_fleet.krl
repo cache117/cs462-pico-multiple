@@ -148,18 +148,23 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 	rule delete_vehicle {
 		select when car unneeded_vehicle
 		pre {
-			vehicle_id = event:attr("vehicle_id").klog("Vehicle Id: ")
-			exists = ent:vehicles >< vehicle_id.klog("Exists: ")
-			eci = meta:eci.klog("Eci: ")
-			child_to_delete = childFromId(vehicle_id).klog("Vehicle to Delete: ")
+			vehicle_id = event:attr("vehicle_id").klog("Vehicle Id: ");
+			exists = ent:vehicles >< vehicle_id.klog("Exists: ");
+			eci = meta:eci.klog("Eci: ");
+			child_to_delete = childFromId(vehicle_id).klog("Vehicle to Delete: ");
+			subscription_name = "vehicle:Vehicle-" + vehicle_id + "-Subscription";
 		}
 		if exists then
 			send_directive("vehicle_deleted", {
 				"vehicle_id": vehicle_id
-			})
+			});
 		fired {
 			raise pico event "delete_child_request"
 				attributes child_to_delete;
+			raise wrangler event "subscription_removal"
+				attributes {
+					"subscription_name": subscription_name
+				};
 			ent:vehicles{[vehicle_id]} := null
 		}
 	}
