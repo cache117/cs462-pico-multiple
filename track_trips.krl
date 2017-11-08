@@ -34,6 +34,10 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 					"domain": "car",
 					"type": "new_trip",
 					"attrs": ["mileage"]
+				},
+				{
+					"domain": "fleet",
+					"type": "report_needed" 
 				}
 			]
 		}
@@ -117,6 +121,17 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
                         }
                 }
 
+	}
+
+	rule fleet_report_needed {
+		select when fleet report_needed
+		always {
+			raise fleet event "report_ready"
+				attributes {
+					"vehicle_id": ent:vehicle_id,
+					"trips": trips()
+				};
+		}
 	}
 
 	rule pico_ruleset_added {

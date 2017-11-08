@@ -5,7 +5,7 @@ ruleset manage_fleet {
 Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 >>
 		logging on
-    		shares __testing, fleet, vehicles, vehicles_trips, show_children
+    		shares __testing, fleet, vehicles, vehicles_trips, show_children, latest_trips
 		use module io.picolabs.pico alias wrangler
 		use module io.picolabs.subscription alias Subscription
   	}
@@ -26,7 +26,11 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 				},
 				{
 					"name": "show_children"
-				}
+				},
+                                {
+                                        "name": "latest_trips"
+                                }
+
 			],
                   	"events": [
 				{
@@ -64,6 +68,10 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 
 		vehicles_trips = function() {
 			"Not Implemented"
+		}
+
+		latest_trips = function() {
+			ent:trips
 		}
 
 		show_children = function() {
@@ -173,6 +181,26 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		select when collection empty
 		always {
 			ent:vehicles := {}
+		}
+	}
+
+	rule request_fleet_report {
+		select when fleet report_requested
+		always {
+			raise fleet event "report_needed"
+				attributes {};
+		}
+	}
+
+	rule fleet_report_recieved {
+		select when fleet report_ready
+		pre {
+			vehicle_id = event:attr("vehicle_id").klog("Report Vehicle Id: ");
+			trips = event:attr("trips").klog("Report trips: ");
+		}
+		always {
+			ent:trips := ent:trips.defaultsTo({});
+			ent:trips{[vehicle_id]} := trips;
 		}
 	}	
 }
