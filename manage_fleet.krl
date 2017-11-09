@@ -80,7 +80,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 
 		child_trips = function(child_eci) {
-			cloud_url = "https://" + meta:host() + "/sky/cloud/" + child_eci + "/track_trips/trips";
+			cloud_url = "https://" + meta:host + "/sky/cloud/" + child_eci + "/track_trips/trips";
 			cloud_url
 		}
 
