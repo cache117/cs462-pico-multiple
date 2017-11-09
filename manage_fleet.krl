@@ -98,7 +98,8 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			error = error_info.put({"skyCloudError": response_error, "skyCloudErrorMsg": response_error_str, "skyCloudReturnValue": response_content});
 			is_bad_response = (response_content.isnull() || response_content == "null" || response_error || response_error_str);
 			// if HTTP status was OK & the response was not null and there were no errors...
-			(status == "200" && not is_bad_response) => response_content | error;
+			//(status == "200" && not is_bad_response) => response_content | error;
+			response_content;
 		}
 		latest_trips = function() {
 			ent:trips
