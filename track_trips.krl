@@ -43,15 +43,15 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 		}
 
 		trips = function() {
-			ent:trips
+			ent:trips.defaultsTo({});
 		}
 
 		long_trips = function() {
-			ent:long_trips
+			ent:long_trips.defaultsTo({});
 		}
 
 		short_trips = function() {
-			ent:trips - ent:long_trips
+			ent:trips.defaultsTo({}); - ent:long_trips.defaultsTo({});
 		}
 	}
 
