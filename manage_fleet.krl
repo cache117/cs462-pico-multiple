@@ -67,7 +67,17 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 
 		vehicles_trips = function() {
-			"Not Implemented"
+			vehicles().filter(function(v, k) {
+					(v{["attributes", "subscriber_role"]} == "vehicle");
+				}).map(function(v, k) {
+				child_eci = v{["attributes", "outbound_eci"]};
+					child_trips(child_eci);
+				});
+		}
+
+		child_trips = function(child_eci) {
+			cloud_url = "https://#{meta:host()}/sky/cloud/#{child_eci}/track_trips/trips";
+			cloud_url
 		}
 
 		latest_trips = function() {
@@ -186,10 +196,17 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 
 	rule request_fleet_report {
 		select when fleet report_requested
-		always {
-			raise fleet event "report_needed"
-				attributes {};
-		}
+		foreach vehicles() setting(vehicle)
+			pre {
+				subs_attrs = subscription{"attributes"};
+			}
+			if subs_attrs{"subscriber_role"} == "vehicle" then
+				event:send({
+					"eci":subs_attrs{"outbound_eci"},
+					"eid": "report-requested",
+					"domain": "fleet",
+					"type": "report_needed"
+				});
 	}
 
 	rule fleet_report_recieved {
