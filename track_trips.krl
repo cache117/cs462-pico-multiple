@@ -8,6 +8,7 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 		logging on
 		shares __testing, trips, long_trips, short_trips
 		provides trips, long_trips, short_trips 
+		use module io.picolabs.subscription alias Subscription
 	}
   
 	global {
@@ -88,7 +89,7 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 	rule collect_trips {
 		select when explicit trip_processed
 		pre {
-			mileage = event:attr("mileage").klog("our passed in mileage for colleting trips ");
+			mileage = event:attr("mileage").klog("our passed in mileage for collecting trips ");
 			trip_id = random:uuid();
 			timestamp = time:now();
 		}
@@ -143,13 +144,17 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 
 	rule fleet_report_needed {
 		select when fleet report_needed
-		always {
-			raise fleet event "report_ready"
-				attributes {
-					"vehicle_id": ent:vehicle_id,
-					"trips": trips()
-				};
-		}
+		foreach Subscription:getSubscriptions() setting(subscription)
+			pre {
+				subs_attrs = subscription{"attributes"}.klog("fleet attributes ");
+			}
+			if subs_attrs{"subscriber_role"} == "controller" then
+				event:send({
+					"eci": subs_attrs{"outbound_eci"},
+					"eid": "report-ready",
+                                        "domain": "fleet",
+                                        "type": "report_ready"
+				});
 	}
 
 	rule pico_ruleset_added {
