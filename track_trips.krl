@@ -153,7 +153,11 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 					"eci": subs_attrs{"outbound_eci"},
 					"eid": "report-ready",
                                         "domain": "fleet",
-                                        "type": "report_ready"
+                                        "type": "report_ready",
+					"attrs": {
+						"vehicle_id": ent:vehicle_id,
+						"trips": trips()
+					}
 				});
 	}
 
