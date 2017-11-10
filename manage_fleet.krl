@@ -71,8 +71,6 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 
 		vehicles_trips = function() {
-			total_vehicles = 0;
-			vehicles_responding = 0;
 			vehicles =  vehicles().filter(function(v, k) {
                                         (v{["attributes", "subscriber_role"]} == "vehicle");
                                 });
@@ -110,7 +108,11 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			response_content;
 		}
 		latest_trips = function() {
-			ent:trips;
+			{
+                                "vehicles": vehicles.keys().length(),
+                                "responding": ent:trips.keys().length(),
+                                "trips": ent:trips
+                        };
 		}
 
 		show_children = function() {
