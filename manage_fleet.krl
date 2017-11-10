@@ -225,13 +225,13 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 
 	rule request_fleet_report {
 		select when fleet report_requested
-		foreach vehicles() setting(vehicle)
+		foreach vehicles() setting(subscription)
 			pre {
-				subs_attrs = subscription{"attributes"};
+				subs_attrs = subscription{"attributes"}.klog("Subscription attributes ");
 			}
 			if subs_attrs{"subscriber_role"} == "vehicle" then
 				event:send({
-					"eci":subs_attrs{"outbound_eci"},
+					"eci": subs_attrs{"outbound_eci"},
 					"eid": "report-requested",
 					"domain": "fleet",
 					"type": "report_needed"
