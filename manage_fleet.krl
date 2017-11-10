@@ -71,12 +71,20 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 
 		vehicles_trips = function() {
-			vehicles().filter(function(v, k) {
-					(v{["attributes", "subscriber_role"]} == "vehicle");
-				}).map(function(v, k) {
-				child_eci = v{["attributes", "outbound_eci"]};
+			total_vehicles = 0;
+			vehicles_responding = 0;
+			vehicles =  vehicles().filter(function(v, k) {
+                                        (v{["attributes", "subscriber_role"]} == "vehicle");
+                                });
+			trips = vehicles.map(function(v, k) {
+					child_eci = v{["attributes", "outbound_eci"]};
 					child_trips(child_eci);
 				});
+			{
+				"vehicles": vehicles.keys().length(),
+				"responding": trips.keys().length(),
+				"trips": trips
+			};
 		}
 
 		child_trips = function(child_eci) {
@@ -102,7 +110,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			response_content;
 		}
 		latest_trips = function() {
-			ent:trips.defaultsTo(child_trips());
+			ent:trips;
 		}
 
 		show_children = function() {
