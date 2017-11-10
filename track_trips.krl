@@ -135,7 +135,8 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 	}
 
 	rule pico_ruleset_added {
-		select when wrangler ruleset_added where rid == meta:rid
+		select when wrangler ruleset_added where rid == meta:rid or 
+			    pico ruleset_added where rid == meta:rid
 		pre {
 			vehicle_id = event:attr("vehicle_id").klog("Ruleset added: vehicle Id ")
 		}
