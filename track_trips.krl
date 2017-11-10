@@ -38,6 +38,11 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
 				{
 					"domain": "fleet",
 					"type": "report_needed" 
+				},
+				{
+					"domain": "car",
+					"type": "set_id",
+					"attrs": ["vehicle_id"]
 				}
 			]
 		}
@@ -98,6 +103,19 @@ Ruleset for CS 462 Lab 6 - Reactive Programming: Single Pico
                         	"mileage": mileage,
                         	"timestamp": timestamp
 			}
+		}
+	}
+
+	rule set_vehicle_id {
+		select when car set_id
+		pre {
+			vehicle_id = event:attr("vehicle_id");
+		}
+		send_directive("change vehicle_id", {
+			"vehicle_id": vehicle_id
+		});
+		always {
+			ent:vehicle_id := vehicle_id;
 		}
 	}
 
