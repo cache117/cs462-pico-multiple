@@ -109,7 +109,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 		}
 		latest_trips = function() {
 			{
-                                "vehicles": vehicles.keys().length(),
+                                "vehicles": vehicles().keys().length(),
                                 "responding": ent:trips.keys().length(),
                                 "trips": ent:trips
                         };
