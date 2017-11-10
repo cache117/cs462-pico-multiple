@@ -102,7 +102,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			response_content;
 		}
 		latest_trips = function() {
-			ent:trips
+			ent:trips.defaultsTo(child_trips());
 		}
 
 		show_children = function() {
