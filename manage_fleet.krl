@@ -111,6 +111,7 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			timestamp_map = ent:trips
 				.values()
 				.map(function(v, k) {
+					v.klog("Value");
 					v{"timestamp"}; 
 				}).klog("Timestamp map: ");
 			timestamp_map = timestamp_map.sort().klog("Sorted Map: ");
