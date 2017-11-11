@@ -142,10 +142,10 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 //					} >= timestamp;
 //				}
 //                      };
-			 trips = ent:trips
+			trips = ent:trips
                                 .values()
                                 .map(function(v, k) {
-                                        v.values()
+                                        v.values().head();
                                 }).klog("Timestamp map: ");
 			length = trips.length();
 			(length > 5) => trips.slice(length - 5, length - 1) | trips
