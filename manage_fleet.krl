@@ -145,13 +145,11 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 			trips = ent:trips
                                 .map(function(v, k) {
                                         v.values();
-                                }).klog("Timestamp map: ")
+                                }).klog("Map: ")
 				.values().klog("Values: ")
-				.map(function(v) {
-					v.head();
-				}).klog("Mapping: ");
+				.head().klog("Head: ");
 			length = trips.length();
-			(length > 5) => trips.slice(length - 5, length - 1) | trips
+			(length > 5) => trips.slice(length - 5, length - 1) | trips;
 		}
 
 		show_children = function() {
