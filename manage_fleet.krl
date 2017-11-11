@@ -115,9 +115,9 @@ Ruleset for CS 462 Lab 7 - Reactive Programming: Multiple Picos"
 					v.values().klog("Value values: ");
 					v.values().map(function(v) {
 						v.klog("Array Value: ");
-						v{"timestamp"}.klog("Hopefully timestamp: ");
+						v{"timestamp"}.klog("timestamp: ");
 						v{"timestamp"};
-					});
+					}).head().klog("head: ");
 				}).klog("Timestamp map: ");
 			timestamp_map = timestamp_map.sort().klog("Sorted Map: ");
 
